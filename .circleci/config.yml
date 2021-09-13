@@ -13,20 +13,26 @@ jobs:
         name: run tests
         command: |
           mkdir test-results
-          pytest --verbose --cov-report html:test-results/coverage_html --cov=cli --junitxml=test-results/junit.xml ./cli_test.py
+          pytest --verbose --no-header --junit-xml=test-results/junit.xml
     - store_test_results:
         path: test-results/junit.xml
     - store_artifacts:
         path: test-results
-#    - run:
-#        name: Run coverage
-#        command: |
-#          coverage run -m pytest
-#          coverage report
-#          coverage html
-#    - store_artifacts:
-#        path: htmlcov
-    
+    - run:
+        name: Run coverage
+        command: |
+          coverage run -m pytest
+          coverage report
+          coverage html
+    - store_artifacts:
+        path: htmlcov
+    - run:
+        name: run linting and metrics
+        command: |
+          mkdir linter-reports
+          flake8 ./cli.py --format=pylint  --output-file linter-reports/linter.txt
+    - store_artifacts:
+        path: linter-reports    
 workflows:
   version: 2
   workflow:
