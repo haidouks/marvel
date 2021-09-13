@@ -45,7 +45,7 @@ jobs:
       - run: 
           name: Build Application Image
           command: |
-            docker build -t cnsn/marvel:latest. 
+            docker build -t cnsn/marvel:latest . 
       # deploy the image
       - run:
           name: Deploy Application Image #Container image security and vulnerability tests could be added..
