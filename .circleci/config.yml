@@ -12,7 +12,9 @@ jobs:
     - run:
         name: Run pytest
         command: |
-          pytest -q cli_test.py
+          pytest cli_test.py --junitxml=pytest-results/report.xml
+    - store_test_results:
+      path: pytest-results
     - run:
         name: Run coverage
         command: |
@@ -21,6 +23,7 @@ jobs:
           coverage html
     - store_artifacts:
         path: htmlcov
+    
 workflows:
   version: 2
   workflow:
