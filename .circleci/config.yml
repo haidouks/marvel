@@ -14,7 +14,7 @@ jobs:
         command: |
           pytest cli_test.py --junitxml=pytest-results/report.xml
     - store_test_results:
-      path: pytest-results
+        path: pytest-results
     - run:
         name: Run coverage
         command: |
