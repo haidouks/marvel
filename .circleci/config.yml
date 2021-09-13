@@ -2,39 +2,39 @@ version: 2
 jobs:
   tests:
     docker:
-    - image: python:3
+    - image: python:3 #Docker image and version which will be used during tests
     steps:
     - checkout
     - run:
-        name: Setup testing environment
+        name: Setup testing environment #Install required test packages
         command: |
           pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
     - run:
-        name: run tests
+        name: Run PyTests #Export junit report to test-results folder
         command: |
           mkdir test-results
           pytest --verbose --no-header --junit-xml=test-results/junit.xml
     - store_test_results:
-        path: test-results/junit.xml
+        path: test-results/junit.xml #Upload report to CircleCI Insights
     - store_artifacts:
-        path: test-results
+        path: test-results #Save report as a build artifact
     - run:
-        name: Run coverage
+        name: Run coverage #Run codecoverage and export report. Don't break anything!
         command: |
           coverage run -m pytest
           coverage report
           coverage html
     - store_artifacts:
-        path: htmlcov
+        path: htmlcov #Save report folder as build artifact
     - run:
-        name: run linting and metrics
+        name: run linting and metrics #Run linter and export report. Don't break anything!
         command: |
           mkdir linter-reports
           flake8 -vv ./cli.py --format=pylint  --output-file linter-reports/linter.txt || cat linter-reports/linter.txt && echo "Yes, I know my mistakes, please don't break :("
     - store_artifacts:
-        path: linter-reports    
+        path: linter-reports #Save report folder as build artifact   
   deploy:
-    machine: true
+    machine: true #Use VM instead of container to run docker commands
     steps:
       - checkout
       - run: 
@@ -48,7 +48,7 @@ jobs:
             docker build -t cnsn/marvel:latest. 
       # deploy the image
       - run:
-          name: Deploy Application Image 
+          name: Deploy Application Image #Container image security and vulnerability tests could be added..
           command: |
             docker push cnsn/marvel:latest
 
@@ -57,6 +57,6 @@ workflows:
   test-build-deploy:
     jobs:
     - tests
-    - deploy:
+    - deploy: #Deployment requires tests to be successfull
         requires: 
-          - tests
+          - tests 
