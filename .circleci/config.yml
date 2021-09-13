@@ -10,11 +10,14 @@ jobs:
         command: |
           pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
     - run:
-        name: Run pytest
+        name: run tests
         command: |
-          pytest cli_test.py --junitxml=pytest-results/report.xml
+          mkdir test-results
+          pytest --junitxml=test-results/junit.xml
     - store_test_results:
-        path: pytest-results
+        path: test-results
+    - store_artifacts:
+        path: test-results
     - run:
         name: Run coverage
         command: |
