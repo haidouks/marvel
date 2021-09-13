@@ -33,17 +33,24 @@ def search_marvel_characters(keyword: str):
         'ts': timestamp,
         'apikey': public_key,
         'hash': hash_params(),
-        'limit': 50,
+        'limit': 100,
         'offset': 0
     }
     do = True
     while(do):
 
         logging.debug(msg=f"Checking for offset: {params['offset']}")
-        response = requests.get(
-            url=f'{os.getenv("marvel_api")}/v1/public/characters',
-            params=params
-        )
+        try: #Check if there is a problem with marvel api
+            response = requests.get(
+                url=f'{os.getenv("marvel_api")}/v1/public/characters',
+                params=params
+            )
+            if response.status_code >= 400:
+                raise Exception(f"Status code is {response.status_code} and details {response.json()}")
+        except Exception as e:
+            logging.error(msg=e)
+            break
+        
         # Get results from response
         results = response.json()["data"]["results"]
         for character in results:
