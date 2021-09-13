@@ -12,20 +12,21 @@ jobs:
     - run:
         name: run tests
         command: |
+          . venv/bin/activate
           mkdir test-results
-          pytest --junitxml=test-results/junit.xml
+          pytest --verbose --cov-report html:~/test-results/coverage_html --cov=. --junitxml=~/test-results/junit.xml
     - store_test_results:
         path: test-results
     - store_artifacts:
         path: test-results
-    - run:
-        name: Run coverage
-        command: |
-          coverage run -m pytest
-          coverage report
-          coverage html
-    - store_artifacts:
-        path: htmlcov
+#    - run:
+#        name: Run coverage
+#        command: |
+#          coverage run -m pytest
+#          coverage report
+#          coverage html
+#    - store_artifacts:
+#        path: htmlcov
     
 workflows:
   version: 2
