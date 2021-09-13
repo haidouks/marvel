@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/haidouks/marvel/tree/circleci-project-setup.svg?style=svg)](https://circleci.com/gh/haidouks/marvel/tree/circleci-project-setup)
+[![CircleCI](https://circleci.com/gh/haidouks/marvel/tree/master.svg?style=svg)](https://circleci.com/gh/haidouks/marvel/tree/master)
 
 # Marvel Search Engine
 Marvel Search Engine is a python cli which takes a keyword from user and finds related marvel characters
