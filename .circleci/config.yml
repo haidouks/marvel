@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  tests:
     docker:
     - image: python:3
     steps:
@@ -30,11 +30,33 @@ jobs:
         name: run linting and metrics
         command: |
           mkdir linter-reports
-          flake8 -vv ./cli.py --format=pylint  --output-file linter-reports/linter.txt || echo "Yes I know my mistakes, please don't break :("
+          flake8 -vv ./cli.py --format=pylint  --output-file linter-reports/linter.txt || cat linter-reports/linter.txt && echo "Yes, I know my mistakes, please don't break :("
     - store_artifacts:
         path: linter-reports    
+  deploy:
+    machine: true
+    steps:
+      - checkout
+      - run: 
+          name: Login to DockerHub
+          command: |
+            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+      # build the application image
+      - run: 
+          name: Build Application Image
+          command: |
+            docker build -t cnsn/marvel:$CIRCLE_BRANCH . 
+      # deploy the image
+      - run:
+          name: Deploy Application Image 
+          command: |
+            docker push cnsn/marvel:$CIRCLE_BRANCH
+
 workflows:
   version: 2
-  workflow:
+  build-test-and-deploy:
     jobs:
-    - build
+    - tests
+    - deploy:
+        requires: 
+          - tests
