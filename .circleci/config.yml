@@ -13,7 +13,7 @@ jobs:
         name: run tests
         command: |
           mkdir test-results
-          ytest --verbose --cov-report html:test-results/coverage_html --cov=cli --junitxml=test-results/junit.xml ./cli_test.py
+          pytest --verbose --cov-report html:test-results/coverage_html --cov=cli --junitxml=test-results/junit.xml ./cli_test.py
     - store_test_results:
         path: test-results/junit.xml
     - store_artifacts:
