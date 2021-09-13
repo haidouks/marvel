@@ -10,15 +10,15 @@ jobs:
         command: |
           pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
     - run:
-        name: Run Tests
+        name: Run pytest
         command: |
           pytest -q cli_test.py
     - run:
-        name: Run Tests
+        name: Run coverage
         command: |
           $HOME/.local/bin/coverage run -m pytest
           $HOME/.local/bin/coverage report
-          $HOME/.local/bin/coverage html  # open htmlcov/index.html in a browser
+          $HOME/.local/bin/coverage html
     - store_artifacts:
         path: htmlcov
 workflows:
