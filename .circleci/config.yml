@@ -45,16 +45,16 @@ jobs:
       - run: 
           name: Build Application Image
           command: |
-            docker build -t cnsn/marvel:$CIRCLE_BRANCH . 
+            docker build -t cnsn/marvel:latest. 
       # deploy the image
       - run:
           name: Deploy Application Image 
           command: |
-            docker push cnsn/marvel:$CIRCLE_BRANCH
+            docker push cnsn/marvel:latest
 
 workflows:
   version: 2
-  build-test-and-deploy:
+  test-build-deploy:
     jobs:
     - tests
     - deploy:
