@@ -2,7 +2,7 @@ import hashlib
 import requests
 import datetime
 from pprint import pprint
-import logging
+import logging, os
 # from marvel import Marvel #Did not want to use client :)
 
 logging.basicConfig(  # Set logging format & config
@@ -14,8 +14,8 @@ logging.basicConfig(  # Set logging format & config
 timestamp = datetime.datetime.now().strftime('%Y-%m-%d%H:%M:%S')
 
 # Keys received from Marvel
-public_key = 'a66345542c86987744a1702aa4fa6c5a'
-private_key = 'b7b6e3b60bfa422572ef626753fe2c5cb2de8c6b'
+public_key = os.getenv("marvel_public_key")
+private_key = os.getenv("marvel_private_key")
 
 
 def hash_params():
@@ -41,7 +41,7 @@ def search_marvel_characters(keyword: str):
 
         logging.debug(msg=f"Checking for offset: {params['offset']}")
         response = requests.get(
-            url='https://gateway.marvel.com:443/v1/public/characters',
+            url=f'{os.getenv("marvel_api")}/v1/public/characters',
             params=params
         )
         # Get results from response
